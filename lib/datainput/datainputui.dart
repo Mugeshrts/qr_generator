@@ -11,7 +11,7 @@ import 'package:qr_generator/qrgenerator/qrui.dart';
 class InputPage extends StatelessWidget {
   final List<String> selectedFields;
 
-  const InputPage({Key? key, required this.selectedFields}) : super(key: key);
+  const InputPage({super.key, required this.selectedFields});
 
   @override
   Widget build(BuildContext context) {

@@ -10,6 +10,8 @@ import 'package:qr_generator/selectfield/selectionstate.dart';
 class SelectionPage extends StatelessWidget {
   final TextEditingController newCardController = TextEditingController();
 
+  SelectionPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

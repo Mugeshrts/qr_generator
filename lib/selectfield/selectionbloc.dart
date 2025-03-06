@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:qr_generator/selectfield/selectionevent.dart';
 import 'package:qr_generator/selectfield/selectionstate.dart';
 
