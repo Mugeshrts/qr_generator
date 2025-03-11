@@ -21,6 +21,7 @@ version: 1.0.0+1
 environment:
   sdk: ^3.7.0
 
+
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -48,6 +49,10 @@ dependencies:
   pdf: ^3.11.3
   qr_code_scanner_plus: ^2.0.10+1
   mobile_scanner: ^6.0.7
+  geolocator: ^13.0.2
+  flutter_background_service: ^5.1.0
+  flutter_background_service_android: ^6.3.0
+  syncfusion_flutter_datagrid: ^28.2.9
 
 dev_dependencies:
   flutter_test:

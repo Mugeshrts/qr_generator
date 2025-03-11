@@ -18,3 +18,15 @@ class UpdateFieldEvent extends InputEvent {
 class SubmitFormEvent extends InputEvent {}
 class GenerateQrEvent extends InputEvent {}
 class ResetQrEvent extends InputEvent {} // Event to reset QR state
+
+
+class UpdateLocationEvent extends InputEvent {
+  final String latitude;
+  final String longitude;
+  final String accuracy;
+
+  UpdateLocationEvent({required this.latitude, required this.longitude, required this.accuracy});
+
+  @override
+  List<Object> get props => [latitude, longitude, accuracy];
+}

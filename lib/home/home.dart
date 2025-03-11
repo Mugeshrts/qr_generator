@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:qr_generator/qrgenerator/qrui.dart';
-import 'package:qr_generator/qrscanner/qrscanui.dart';
-import 'package:qr_generator/selectfield/selectionui.dart';
+import 'package:qr_generator/qrscanners/qrscanner/qrscanui.dart';
+import 'package:qr_generator/grgenerator/selectfield/selectionui.dart';
 
 
 class HomeScreen extends StatelessWidget {

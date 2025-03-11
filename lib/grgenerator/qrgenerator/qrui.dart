@@ -10,9 +10,9 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:printing/printing.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:qr_generator/datainput/datainputbloc.dart';
-import 'package:qr_generator/datainput/datainputevent.dart';
-import 'package:qr_generator/datainput/datainputstate.dart';
+import 'package:qr_generator/grgenerator/datainput/datainputbloc.dart';
+import 'package:qr_generator/grgenerator/datainput/datainputevent.dart';
+import 'package:qr_generator/grgenerator/datainput/datainputstate.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 

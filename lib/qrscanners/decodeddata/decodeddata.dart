@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:qr_generator/qrscanner/qrscanui.dart';
+import 'package:qr_generator/qrscanners/qrscanner/qrscanui.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ScannedDataPage extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:qr_generator/selectfield/selectionevent.dart';
-import 'package:qr_generator/selectfield/selectionstate.dart';
+import 'package:qr_generator/grgenerator/selectfield/selectionevent.dart';
+import 'package:qr_generator/grgenerator/selectfield/selectionstate.dart';
 
 
 // class SelectionBloc extends Bloc<SelectionEvent, SelectionState> {

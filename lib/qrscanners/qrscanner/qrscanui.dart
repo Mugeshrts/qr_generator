@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:qr_generator/decodeddata/decodeddata.dart';
+import 'package:qr_generator/qrscanners/decodeddata/decodeddata.dart';
 // import 'package:qr_generator/scanner/scanned_data_page.dart';
 
 class QrScannerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("QR scanner",style: TextStyle(color: Colors.white),),
+     backgroundColor: Colors.teal,
+     iconTheme: IconThemeData(color: Colors.white),
+      ),
       body: Stack(
         children: [
           MobileScanner(
@@ -30,16 +35,6 @@ class QrScannerPage extends StatelessWidget {
                 border: Border.all(color: Colors.teal, width: 3),
                 borderRadius: BorderRadius.circular(10),
               ),
-            ),
-          ),
-
-          // Back Button
-          Positioned(
-            top: 40,
-            left: 16,
-            child: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-              onPressed: () => Get.back(),
             ),
           ),
 

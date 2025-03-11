@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:qr_generator/datainput/datainputui.dart';
-import 'package:qr_generator/selectfield/selectionbloc.dart';
-import 'package:qr_generator/selectfield/selectionevent.dart';
-import 'package:qr_generator/selectfield/selectionstate.dart';
+import 'package:qr_generator/grgenerator/datainput/datainputui.dart';
+import 'package:qr_generator/grgenerator/selectfield/selectionbloc.dart';
+import 'package:qr_generator/grgenerator/selectfield/selectionevent.dart';
+import 'package:qr_generator/grgenerator/selectfield/selectionstate.dart';
 
 class SelectionPage extends StatelessWidget {
   final TextEditingController newCardController = TextEditingController();

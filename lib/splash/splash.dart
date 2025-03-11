@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_generator/home/home.dart';
+import 'package:qr_generator/locationservice/lcoationservice.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -27,6 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
     ].request();
 
     if (statuses.values.every((status) => status.isGranted)) {
+       _startLocationService();  // ✅ Start the background location service
       _navigateToHome();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -34,6 +36,11 @@ class _SplashScreenState extends State<SplashScreen> {
       );
     }
   }
+
+void _startLocationService() async{
+  // await Get.putAsync(() => LocationService().getCurrentLocation());
+}
+
 
   /// Navigate to Home Screen
   void _navigateToHome() {
