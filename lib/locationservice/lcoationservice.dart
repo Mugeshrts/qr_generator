@@ -1,12 +1,17 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 
 
 class LocationService extends GetxService {
   Rx<Position?> currentPosition = Rx<Position?>(null);
+
+
+
   Timer? _timer;
 
  @override
@@ -31,22 +36,53 @@ class LocationService extends GetxService {
       }
     }
 
-    // Start periodic location updates every 5 seconds
+     // Start periodic location updates every 5 seconds
     _timer = Timer.periodic(Duration(seconds: 5), (timer) async {
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
       );
+
+      // Check if the location is mocked (Fake GPS)
+      if (position.isMocked) {
+        print('⚠️ Mocked Location Detected! Stopping location updates.');
+        stopTracking();
+        _showMockedLocationPopup();
+        return;
+      }
+
       currentPosition.value = position;
+      currentPosition.refresh(); // ✅ Force UI refresh
 
       // Convert accuracy to integer
       int accuracyInt = position.accuracy.toInt();
 
-      print('Updated Location: Lat: ${position.latitude}, Lng: ${position.longitude}');
-      print("Accuracy: ${accuracyInt}M");
+      print('📍 Updated Location: Lat: ${position.latitude}, Lng: ${position.longitude}');
+      print("🎯 Accuracy: ${accuracyInt}M");
     });
   }
+
 
   void stopTracking() {
     _timer?.cancel();
   }
+
+ /// Show Popup if Fake GPS is Detected
+  void _showMockedLocationPopup() {
+    Get.dialog(
+      AlertDialog(
+        title: Text("Warning"),
+        content: Text("Mocked (Fake) Location detected! Please disable Fake GPS."),
+        actions: [
+          TextButton(
+            onPressed: (){
+              exit(0);
+            },
+            child: Text("Close App",style: TextStyle(color: Colors.red),),
+          ),
+        ],
+      ),
+      barrierDismissible: false,
+    );
+  }
+
 }

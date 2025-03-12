@@ -11,10 +11,30 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
-    _requestPermissions();
+    _checkAndRequestPermissions();
+  }
+
+
+  /// ✅ Check Permissions & Request if Not Granted
+  Future<void> _checkAndRequestPermissions() async {
+    if (await _allPermissionsGranted()) {
+      _startLocationService(); // ✅ Start the background location service
+      _navigateToHome();
+    } else {
+      _requestPermissions();
+    }
+  }
+
+  /// ✅ Check if All Required Permissions are Granted
+  Future<bool> _allPermissionsGranted() async {
+    return await Permission.camera.isGranted &&
+        await Permission.location.isGranted;
   }
 
   /// Request All Permissions
@@ -27,18 +47,22 @@ class _SplashScreenState extends State<SplashScreen> {
       // Permission.photos,
     ].request();
 
-    if (statuses.values.every((status) => status.isGranted)) {
-       _startLocationService();  // ✅ Start the background location service
+    if (await _allPermissionsGranted()) {
+      _startLocationService();
       _navigateToHome();
     } else {
+      setState(() {
+        _isLoading = false; // ✅ Stop loader if permissions are denied
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Please grant all permissions to continue.")),
       );
     }
   }
 
+
 void _startLocationService() async{
-  // await Get.putAsync(() => LocationService().getCurrentLocation());
+  Get.put(LocationService());
 }
 
 
@@ -61,7 +85,9 @@ void _startLocationService() async{
             SizedBox(height: 20),
             Text("QR Code App", style: TextStyle(fontSize: 24, color: Colors.white)),
             SizedBox(height: 10),
-            CircularProgressIndicator(color: Colors.white),
+           _isLoading 
+                ? CircularProgressIndicator(color: Colors.white,)
+                : Text("Permission Required", style: TextStyle(fontSize: 16, color:Colors.white)),
           ],
         ),
       ),

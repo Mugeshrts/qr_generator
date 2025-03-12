@@ -42,23 +42,19 @@ class InputPage extends StatelessWidget {
                     final position = locationService.currentPosition.value;
                     return Column(
                       children: [
-                        _buildReadOnlyField("Latitude", position?.latitude.toString() ?? "Fetching..."),
-                        _buildReadOnlyField("Longitude", position?.longitude.toString() ?? "Fetching..."),
-                        _buildReadOnlyField("Accuracy", position?.accuracy.toInt().toString() ?? "Fetching..."),
+                        // _buildReadOnlyField("Latitude", position?.latitude.toString() ?? "Fetching..."),
+                        // _buildReadOnlyField("Longitude", position?.longitude.toString() ?? "Fetching..."),
+                        // _buildReadOnlyField("Accuracy", position?.accuracy.toInt().toString() ?? "Fetching..."),
+                        _buildReadOnlyField("Accuracy", position != null ? "${position.accuracy.toInt()} M" : "Fetching..."),
                       ],
                     );
                   }),
 
 
-                    // Live Location Fields (Non-editable)
-                  // _buildReadOnlyField("Latitude", state.fieldValues["Latitude"] ?? "Fetching..."),
-                  // _buildReadOnlyField("Longitude", state.fieldValues["Longitude"] ?? "Fetching..."),
-                  // _buildReadOnlyField("Accuracy", state.fieldValues["Accuracy"] ?? "Fetching..."),
-
-
-
 
                   const SizedBox(height: 10),
+
+                  // Text("State Accuracy Value: ${state.isAccuracyValid ? "✅ Valid" : "❌ Invalid"}"), // ✅ Debug output
 
                   // Dynamic Input Fields
                   Expanded(
@@ -85,7 +81,7 @@ class InputPage extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: state.isFormValid
+                      onPressed: state.isFormValid && state.isAccuracyValid
                           ? () {
                               context.read<InputBloc>().add(GenerateQrEvent());
                               // Navigate to QR Page after generating the QR
@@ -102,7 +98,8 @@ class InputPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text("Create QR", style: TextStyle(fontSize: 18)),
+                      child:  Text(                        
+                        state.isAccuracyValid ? "Create QR" : "Waiting for better Accuracy....", style: TextStyle(fontSize: 18)),
                     ),
                   ),
                 ],
@@ -118,7 +115,8 @@ class InputPage extends StatelessWidget {
   Widget _buildReadOnlyField(String label, String value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
-      child: TextFormField(
+        child: TextFormField(
+        key: ValueKey(value), // ✅ Forces UI rebuild
         initialValue: value,
         decoration: InputDecoration(
           labelText: label,
