@@ -5,12 +5,11 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:lottie/lottie.dart';
 
 
 class LocationService extends GetxService {
   Rx<Position?> currentPosition = Rx<Position?>(null);
-
-
 
   Timer? _timer;
 
@@ -67,22 +66,42 @@ class LocationService extends GetxService {
   }
 
  /// Show Popup if Fake GPS is Detected
-  void _showMockedLocationPopup() {
-    Get.dialog(
-      AlertDialog(
-        title: Text("Warning"),
-        content: Text("Mocked (Fake) Location detected! Please disable Fake GPS."),
-        actions: [
-          TextButton(
-            onPressed: (){
-              exit(0);
-            },
-            child: Text("Close App",style: TextStyle(color: Colors.red),),
+ void _showMockedLocationPopup() {
+  Get.dialog(
+    AlertDialog(
+      titlePadding: EdgeInsets.only(top: 10), // Remove default padding
+      contentPadding: EdgeInsets.all(16), 
+      title: Column(
+        children: [
+          /// ✅ Lottie Animation at Top Center
+          Lottie.asset(
+            'assets/lottie/warning.json', // Ensure the correct path
+            width: 100,
+            height: 100,
+            fit: BoxFit.cover,
+          ),
+          SizedBox(height: 10),
+          Text(
+            "FAKE GPS ALERT!",
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
         ],
       ),
-      barrierDismissible: false,
-    );
-  }
+      content: Text("Mocked (Fake) Location detected! Please disable Fake GPS.",style: TextStyle(fontSize: 20),),
+      actions: [
+        TextButton(
+          onPressed: () {
+            exit(0);
+          },
+          child: Text(
+            "Close App",
+            style: TextStyle(color: Colors.red,fontSize: 20),
+          ),
+        ),
+      ],
+    ),
+    barrierDismissible: false, // Prevent closing by tapping outside
+  );
+}
 
 }

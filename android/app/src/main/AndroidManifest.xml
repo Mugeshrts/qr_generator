@@ -51,6 +51,11 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+     
+         <meta-data    
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAhfvvLnIN4dlYAGTn5sfR1cuXMMmjzuNE"/>
+
 
         <service
             android:name="com.example.YourApp.BackgroundService"

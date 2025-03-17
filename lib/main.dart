@@ -41,6 +41,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:qr_generator/demo.dart';
 import 'package:qr_generator/grgenerator/selectfield/selectionbloc.dart';
 import 'package:qr_generator/locationservice/lcoationservice.dart';
 import 'package:qr_generator/splash/splash.dart';

@@ -1,9 +1,9 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_generator/home/home.dart';
 import 'package:qr_generator/locationservice/lcoationservice.dart';
-
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -11,8 +11,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
-bool _isLoading = true;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -20,55 +19,65 @@ bool _isLoading = true;
     _checkAndRequestPermissions();
   }
 
-
-  /// ✅ Check Permissions & Request if Not Granted
+  /// ✅ Check and Request Permissions One by One
   Future<void> _checkAndRequestPermissions() async {
-    if (await _allPermissionsGranted()) {
-      _startLocationService(); // ✅ Start the background location service
+    bool allGranted = await _allPermissionsGranted();
+
+    if (allGranted) {
+      _startLocationService();
       _navigateToHome();
     } else {
-      _requestPermissions();
+      await _requestPermissions();
     }
   }
 
-  /// ✅ Check if All Required Permissions are Granted
+  /// ✅ Check if All Permissions are Granted
   Future<bool> _allPermissionsGranted() async {
     return await Permission.camera.isGranted &&
         await Permission.location.isGranted;
   }
 
-  /// Request All Permissions
+  /// ✅ Request Permissions One by One
   Future<void> _requestPermissions() async {
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.camera,
-      // Permission.storage,
-      // Permission.manageExternalStorage,
-      Permission.location,
-      // Permission.photos,
-    ].request();
+    log("Requesting Permissions");
 
+    // Request Camera Permission
+    if (!await Permission.camera.isGranted) {
+      await Permission.camera.request();
+    }
+
+    // Request Location Permission
+    if (!await Permission.location.isGranted) {
+      await Permission.location.request();
+    }
+
+    // ✅ Check if all permissions are granted after requests
     if (await _allPermissionsGranted()) {
+      log("All permissions granted");
       _startLocationService();
       _navigateToHome();
     } else {
+      log("Permissions denied");
       setState(() {
-        _isLoading = false; // ✅ Stop loader if permissions are denied
+        _isLoading = false; // Stop loader if permissions are denied
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please grant all permissions to continue.")),
+        SnackBar(
+          content: Text("Please grant all permissions to continue."),
+          duration: Duration(seconds: 3),
+        ),
       );
     }
   }
 
+  /// ✅ Start Location Service
+  void _startLocationService() async {
+    Get.put(LocationService());
+  }
 
-void _startLocationService() async{
-  Get.put(LocationService());
-}
-
-
-  /// Navigate to Home Screen
+  /// ✅ Navigate to Home Screen
   void _navigateToHome() {
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(seconds: 1), () {
       Get.off(() => HomeScreen());
     });
   }
@@ -83,11 +92,17 @@ void _startLocationService() async{
           children: [
             Icon(Icons.qr_code_scanner, size: 100, color: Colors.white),
             SizedBox(height: 20),
-            Text("QR Code App", style: TextStyle(fontSize: 24, color: Colors.white)),
+            Text(
+              "QR Code App",
+              style: TextStyle(fontSize: 24, color: Colors.white),
+            ),
             SizedBox(height: 10),
-           _isLoading 
-                ? CircularProgressIndicator(color: Colors.white,)
-                : Text("Permission Required", style: TextStyle(fontSize: 16, color:Colors.white)),
+            _isLoading
+                ? CircularProgressIndicator(color: Colors.white)
+                : Text(
+                  "Permission Required",
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
           ],
         ),
       ),
