@@ -44,7 +44,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:qr_generator/demo.dart';
 import 'package:qr_generator/grgenerator/selectfield/selectionbloc.dart';
 import 'package:qr_generator/locationservice/lcoationservice.dart';
-import 'package:qr_generator/splash/splash.dart';
+import 'package:qr_generator/qrscanners/decodeddata/bloc/decodeddata_bloc.dart';
+import 'package:qr_generator/splash/bloc/testsplash.dart';
 
 
 void startBackgroundService() async {
@@ -59,11 +60,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
 
-  // Register LocationService
-  Get.put(LocationService()); 
+  // // Register LocationService
+  // Get.put(LocationService()); 
 
-   // Register LocationService in GetX
-  Get.put(LocationService());
+  //  // Register LocationService in GetX
+  // Get.put(LocationService());
 
   runApp(MyApp());
 }
@@ -76,6 +77,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => SelectionBloc()),
+        BlocProvider(create: (context) => ScannedDataBloc()), // ✅ Provide Bloc
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,

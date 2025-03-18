@@ -5,7 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_generator/locationservice/lcoationservice.dart';
-import 'package:qr_generator/qrscanners/decodeddata/decodeddata.dart';
+import 'package:qr_generator/qrscanners/decodeddata/bloc/decodeddata.dart';
 
 class QrScannerPage extends StatefulWidget {
   @override

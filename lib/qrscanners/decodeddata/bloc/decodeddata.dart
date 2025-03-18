@@ -1,3 +1,67 @@
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:get/get.dart';
+// import 'package:qr_generator/qrscanners/decodeddata/bloc/decodeddata_bloc.dart';
+// import 'package:qr_generator/qrscanners/decodeddata/bloc/decodeddata_event.dart';
+// import 'package:qr_generator/qrscanners/decodeddata/bloc/decodeddata_state.dart';
+// import 'package:qr_generator/qrscanners/qrscanner/qrscanui.dart';
+
+
+// class ScannedDataPage extends StatelessWidget {
+//   final String scannedData;
+
+//   const ScannedDataPage({Key? key, required this.scannedData}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocProvider(
+//       create: (context) => ScannedDataBloc()..add(DecodeScannedData(scannedData)),
+//       child: Scaffold(
+//         appBar: AppBar(
+//           title: const Text("Scanned Data"),
+//           backgroundColor: Colors.teal,
+//           leading: IconButton(
+//             icon: Icon(Icons.arrow_back),
+//             onPressed: () => Get.to(() => QrScannerPage()),
+//           ),
+//           actions: [
+//             IconButton(icon: Icon(Icons.share), onPressed: () => context.read<ScannedDataBloc>().add(ShareScannedData())),
+//             IconButton(icon: Icon(Icons.download), onPressed: () => context.read<ScannedDataBloc>().add(SaveDataAsPdf())),
+//           ],
+//         ),
+//         body: BlocBuilder<ScannedDataBloc, ScannedDataState>(
+//           builder: (context, state) {
+//             if (state is ScannedDataLoaded) {
+//               return ListView(
+//                 padding: EdgeInsets.all(16),
+//                 children: state.decodedFields.entries.map((entry) {
+//                   return Padding(
+//                     padding: const EdgeInsets.only(bottom: 12.0),
+//                     child: TextFormField(
+//                       readOnly: true,
+//                       initialValue: entry.value,
+//                       decoration: InputDecoration(
+//                         labelText: entry.key,
+//                         border: OutlineInputBorder(),
+//                         suffixIcon: IconButton(
+//                           icon: Icon(Icons.copy),
+//                           onPressed: () => context.read<ScannedDataBloc>().add(CopyToClipboard(entry.value)),
+//                         ),
+//                       ),
+//                     ),
+//                   );
+//                 }).toList(),
+//               );
+//             }
+//             return Center(child: CircularProgressIndicator());
+//           },
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';

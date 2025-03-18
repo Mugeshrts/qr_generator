@@ -1,115 +1,109 @@
-// import 'dart:async';
-// import 'package:geolocator/geolocator.dart';
-// import 'package:get/get.dart';
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'package:qr_generator/locationservice/lcoationservice.dart';
-
-
-// class LocationScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     final locationService = Get.find<LocationService>(); // Ensure it's registered
-
-//     return Scaffold(
-//       appBar: AppBar(title: Text('Live Location Tracker')),
-//       body: Center(
-//         child: Obx(() {
-//           final position = locationService.currentPosition.value;
-//           return position != null
-//               ? Column(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     Text('LatLong: ${position.latitude}, ${position.longitude}'),
-//                     // Text('Longitude: ${position.longitude}'),
-//                     Text('Accuracy: ${position.accuracy.toInt()}M')
-//                   ],
-//                 )
-//               : Text('Fetching location...');
-//         }),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () => locationService.startTracking(),
-//         child: Icon(Icons.location_on),
-//       ),
-//     );
-//   }
-// }
-
-
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_generator/home/home.dart';
+import 'package:qr_generator/locationservice/lcoationservice.dart';
 
-
-class PermissionHelper {
-  static Future<bool> requestPermission(Permission permission) async {
-    print("Requesting ${permission.toString()}...");
-    
-    PermissionStatus status = await permission.request();
-    
-    print("${permission.toString()} Status: $status");
-
-    if (status == PermissionStatus.permanentlyDenied) {
-      print("Permission permanently denied! Opening settings...");
-      openAppSettings(); // Opens app settings if permission is permanently denied
-      return false;
-    }
-
-    return status.isGranted;
-  }
-
-  static Future<bool> requestCameraPermission() => requestPermission(Permission.camera);
-
-  static Future<bool> requestLocationPermission() => requestPermission(Permission.location);
-}
-
-
-
-class SplashScreen1 extends StatefulWidget {
+class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen1> {
+class _SplashScreenState extends State<SplashScreen> {
+  bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
-    _checkPermissions();
+    _checkAndRequestPermissions();
   }
 
- Future<void> _checkPermissions() async {
-  print("Requesting Camera Permission...");
-  bool cameraGranted = await PermissionHelper.requestCameraPermission();
-  print("Camera Permission: $cameraGranted");
+  /// ✅ Check and Request Permissions One by One
+  Future<void> _checkAndRequestPermissions() async {
+    bool allGranted = await _allPermissionsGranted();
 
-  await Future.delayed(Duration(milliseconds: 500)); // Avoid multiple requests at once
-
-  print("Requesting Location Permission...");
-  bool locationGranted = await PermissionHelper.requestLocationPermission();
-  print("Location Permission: $locationGranted");
-
-  await Future.delayed(Duration(seconds: 2)); // Simulating splash duration
-
-  if (cameraGranted && locationGranted) {
-    print("All permissions granted. Navigating to HomeScreen.");
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomeScreen()),
-    );
-  } else {
-    print("Permissions denied. Showing dialog or handling UI.");
+    if (allGranted) {
+      _startLocationService();
+      _navigateToHome();
+    } else {
+      await _requestPermissions();
+    }
   }
-}
+
+  /// ✅ Check if All Permissions are Granted
+  Future<bool> _allPermissionsGranted() async {
+    return await Permission.camera.isGranted &&
+        await Permission.location.isGranted;
+  }
+
+  /// ✅ Request Permissions One by One
+  Future<void> _requestPermissions() async {
+    log("Requesting Permissions");
+
+    // Request Camera Permission
+    if (!await Permission.camera.isGranted) {
+      await Permission.camera.request();
+    }
+
+    // Request Location Permission
+    if (!await Permission.location.isGranted) {
+      await Permission.location.request();
+    }
+
+    // ✅ Check if all permissions are granted after requests
+    if (await _allPermissionsGranted()) {
+      log("All permissions granted");
+      _startLocationService();
+      _navigateToHome();
+    } else {
+      log("Permissions denied");
+      setState(() {
+        _isLoading = false; // Stop loader if permissions are denied
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Please grant all permissions to continue."),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
+  /// ✅ Start Location Service
+  void _startLocationService() async {
+    Get.put(LocationService());
+  }
+
+  /// ✅ Navigate to Home Screen
+  void _navigateToHome() {
+    Future.delayed(Duration(seconds: 1), () {
+      Get.off(() => HomeScreen());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.teal,
       body: Center(
-        child: Text(
-          "Loading...",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.qr_code_scanner, size: 100, color: Colors.white),
+            SizedBox(height: 20),
+            Text(
+              "QR Code App",
+              style: TextStyle(fontSize: 24, color: Colors.white),
+            ),
+            SizedBox(height: 10),
+            _isLoading
+                ? CircularProgressIndicator(color: Colors.white)
+                : Text(
+                  "Permission Required",
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+          ],
         ),
       ),
     );
