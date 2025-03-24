@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:qr_generator/demoforkumarsir/dashboard/dash_ui.dart';
 import 'package:qr_generator/home/home.dart';
 import 'package:qr_generator/locationservice/lcoationservice.dart';
 
@@ -78,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
   /// ✅ Navigate to Home Screen
   void _navigateToHome() {
     Future.delayed(Duration(seconds: 1), () {
-      Get.off(() => HomeScreen());
+      Get.off(() => DashboardScreen());
     });
   }
 
