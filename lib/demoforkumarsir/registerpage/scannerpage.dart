@@ -58,6 +58,9 @@ void _showAlreadyRegisteredPopup(String uniqueID) {
 
   @override
   Widget build(BuildContext context) {
+  final size = MediaQuery.of(context).size;
+  final cutOutSize = size.width * 0.7;
+
     return Scaffold(
       appBar: AppBar(title: Text("Scan QR Code",style: TextStyle(color: Colors.white),), backgroundColor: Colors.teal, iconTheme: IconThemeData(color: Colors.white),),
       body: Column(
@@ -67,6 +70,13 @@ void _showAlreadyRegisteredPopup(String uniqueID) {
             child: QRView(
               key: qrKey,
               onQRViewCreated: _onQRViewCreated,
+               overlay: QrScannerOverlayShape(
+                borderColor: Colors.teal,
+                borderRadius: 10,
+                borderLength: 30,
+                borderWidth: 10,
+                cutOutSize: cutOutSize,
+              ),
             ),
           ),
           Expanded(

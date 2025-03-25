@@ -88,7 +88,7 @@ class _QRValidationScreenState extends State<QRValidationScreen> {
       currentPosition.latitude, currentPosition.longitude,
     );
 
-    if (distance <= 20) {
+    if (distance <= 15) {
       setState(() {
         validationMessage = "🎉 Location Matched!";
         userData = savedData;
@@ -96,7 +96,7 @@ class _QRValidationScreenState extends State<QRValidationScreen> {
       });
     } else {
       setState(() {
-        validationMessage = "⚠️ You are outside the 20M range!";
+        validationMessage = "⚠️ You are outside the 15M range!";
         userData = null;
         isLoading = false;
       });
@@ -148,7 +148,7 @@ class _QRValidationScreenState extends State<QRValidationScreen> {
           child: Column(
             children: [
               Lottie.asset(
-                validationMessage!.contains("")
+                validationMessage!.contains("🎉")
                     ? 'assets/lottie/correct.json'
                     : 'assets/lottie/wrong.json',
                 width: size.width * 0.35,
