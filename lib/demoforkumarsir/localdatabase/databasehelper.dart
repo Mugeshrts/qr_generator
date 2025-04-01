@@ -47,4 +47,10 @@ class DatabaseHelper {
 
     return result.map((row) => row['code'] as String).toList();
   }
+
+ Future<void> deleteAllQRs() async {
+  final db = await database;
+  await db.delete('qrcodes');
+ }
+
 }

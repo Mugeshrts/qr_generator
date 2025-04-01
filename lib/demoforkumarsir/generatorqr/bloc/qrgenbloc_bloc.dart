@@ -23,6 +23,11 @@ class QRGeneratorBloc extends Bloc<QRGeneratorEvent, QRGeneratorState> {
     const numbers = '0123456789';
     final random = Random();
     Set<String> uniqueCodes = {};
+    final database = DatabaseHelper.instance;
+
+    // ✅ 1. Clear existing QR codes
+  await database.deleteAllQRs();
+  print("🗑️ Deleted old QR codes from database.");
 
     try {
       final existingCodes = await _databaseHelper.getAllQRs();
