@@ -8,9 +8,7 @@ import 'package:qr_generator/locationservice/lcoationservice.dart';
 
 class FormScreen extends StatefulWidget {
   final String uniqueID;
-
   FormScreen({required this.uniqueID});
-
   @override
   _FormScreenState createState() => _FormScreenState();
 }

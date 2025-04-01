@@ -7,7 +7,6 @@ import 'package:qr_generator/demoforkumarsir/dashboard/bloc/daah_state.dart';
 import 'package:qr_generator/demoforkumarsir/generatorqr/genqr.dart';
 import 'package:qr_generator/demoforkumarsir/registerpage/scannerpage.dart';
 import 'package:qr_generator/demoforkumarsir/validation/validation.dart';
-import 'package:qr_generator/qrscanners/qrscanner/qrscanui.dart';
 
 
 class DashboardScreen extends StatelessWidget {

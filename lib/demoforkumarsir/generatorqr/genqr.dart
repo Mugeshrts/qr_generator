@@ -26,7 +26,7 @@
 //     Future.delayed(Duration.zero, () => _askLimitDialog());
 //   }
 
-//   /// ✅ Ask user for how many QR codes to generate
+  // / ✅ Ask user for how many QR codes to generate
 //   void _askLimitDialog() {
 //     final TextEditingController limitController = TextEditingController(
 //       text: "10",
@@ -349,7 +349,7 @@ class QRGeneratorScreen1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => QRGeneratorBloc(),
+      create: (_) => QRGeneratorBloc()..add(LoadSavedQRCodes()),
       child: Scaffold(
         appBar: AppBar(
           title: Text("QR Code Generator", style: TextStyle(color: Colors.white)),
@@ -369,6 +369,9 @@ class QRGeneratorScreen1 extends StatelessWidget {
                         icon: Icon(Icons.share),
                         onPressed: () => _shareQRs(state.codes),
                       ),
+                      // IconButton(onPressed: () {
+                      //   context.read<QRGeneratorBloc>().add(LoadSavedQRCodes());
+                      // }, icon: Icon(Icons.refresh))
                     ],
                   );
                 }
